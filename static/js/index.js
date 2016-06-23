@@ -41,3 +41,8 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
+
+$(window).on("load resize ", function() {                                                            
+    var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();                     
+    $('.tbl-header').css({'padding-right':scrollWidth});                                               
+}).resize();                                                                                         

@@ -14,9 +14,9 @@ def index():
 def serveStaticResource(resource):
     return send_from_directory('static/', resource)
 
-@app.route("/test")
+@app.route("/nowplaying")
 def test():
-    return "<strong>It's Alive!</strong>"
+    return render_template("nowplaying.html")
 
 if __name__ == '__main__':
     app.run()
