@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Movie Title</h1>
+    </div>
+
+    <hr>
+
+    <div class="form">
+        <form action="/" method="post">
+
+            <h3>Rating:
+                <select>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
+                </select>
+            </h3>
+
+          <div class="field-wrap">
+            <label>
+              Title<span class="req">*</span>
+            </label>
+            <input type="email"required autocomplete="off"/>
+          </div>
+          
+          <div class="field-wrap">
+            <label>
+              Comment<span class="req">*</span>
+            </label>
+            <input type="textarea"required autocomplete="off"/>
+          </div>
+          
+          <button type="submit" class="button button-block"/>Submit</button>
+          
+          </form>
+
+        </div>
+
+    <h3>
+        <button><a href="{{ url_for('review') }}">Back</a></button>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}

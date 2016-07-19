@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Movie Title</h1>
+    </div>
+
+    <hr>
+    
+    <h3>Synopsis</h3>
+    <p>Some stuff about the movie here</p>
+
+    <h3>Cast</h3>
+    <p>Some stuff about the actors here</p>
+
+    <h3>
+        <button><a href="{{ url_for('movie') }}">Back</a></button>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}

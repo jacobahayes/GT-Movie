@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Me</h1>
+    </div>
+
+    <hr>
+
+    <h2>
+        <a>My Order History</a>
+    </h2>
+    <h2>
+        <a>My Payment Information</a>
+    </h2>
+    <h2>
+        <a>My Preferred Theater</a>
+    </h2>
+
+    <h3>
+        <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}

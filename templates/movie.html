@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block body %}
+<style>
+    h2 {
+        text-align: right;
+    }
+    button {
+        width: 180px;
+    }
+</style>
+<div class="form">
+
+    <div class="top-row">
+        <h1>Movie Title</h1>
+    </div>
+
+    <hr>
+
+    <h2>
+        <button><a href="{{ url_for('overview') }}">Overview</a></button>
+    </h2>
+    <h2>
+        <button><a href="{{ url_for('review') }}">Give Review</a></button>
+    </h2>
+    <h2>
+        <button><a href="{{ url_for('buy_ticket') }}">Buy Ticket</a></button>
+    </h2>
+
+    <h3>
+        <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}

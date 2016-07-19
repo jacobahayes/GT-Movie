@@ -79,6 +79,14 @@ h2 {
   color: #ffffff;
 }
 
+h3 {
+  color: #ffffff;
+}
+
+p {
+  color: #ffffff;
+}
+
 label {
   position: absolute;
   -webkit-transform: translateY(6px);

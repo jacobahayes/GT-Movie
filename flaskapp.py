@@ -15,8 +15,32 @@ def serveStaticResource(resource):
     return send_from_directory('static/', resource)
 
 @app.route("/nowplaying")
-def test():
+def nowplaying():
     return render_template("nowplaying.html")
+
+@app.route("/me")
+def me():
+    return render_template("me.html")
+
+@app.route("/movie")
+def movie():
+    return render_template("movie.html")
+
+@app.route("/overview")
+def overview():
+    return render_template("overview.html")
+
+@app.route("/review")
+def review():
+    return render_template("review.html")
+
+@app.route("/givereview")
+def give_review():
+    return render_template("givereview.html")
+
+@app.route("/buyticket")
+def buy_ticket():
+    return render_template("buyticket.html")
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Movie Title</h1>
+    </div>
+
+    <hr>
+
+    <h3>Saved Theater:
+        <select>
+            <option value="AMC">AMC</option>
+            <option value="Carmike">Carmike</option>
+        </select>
+    </h3>
+
+    <h3>City/State/Theater:
+        <div class="field-wrap">
+            <input type="email"required autocomplete="off"/>
+        </div>
+    </h3>
+
+
+    <h3>
+        <button><a href="{{ url_for('movie') }}">Back</a></button>
+        <button>Search</button>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}
