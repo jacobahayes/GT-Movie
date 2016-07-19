@@ -42,5 +42,9 @@ def give_review():
 def buy_ticket():
     return render_template("buyticket.html")
 
+@app.route("/results")
+def results():
+    return render_template("results.html")
+
 if __name__ == '__main__':
     app.run()
