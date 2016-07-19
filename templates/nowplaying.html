@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block body %}
+
+<a href="{{ url_for('me') }}">
+    <img src="{{ url_for('static', filename='me.png') }}" height="60px">
+</a>
+
 <div class="form">
 
     <div class="top-row">
