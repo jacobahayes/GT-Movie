@@ -38,9 +38,9 @@ def review():
 def give_review():
     return render_template("givereview.html")
 
-@app.route("/buyticket")
-def buy_ticket():
-    return render_template("buyticket.html")
+@app.route("/choosetheater")
+def choose_theater():
+    return render_template("choosetheater.html")
 
 @app.route("/results")
 def results():
