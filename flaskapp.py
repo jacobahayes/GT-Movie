@@ -42,9 +42,9 @@ def give_review():
 def choose_theater():
     return render_template("choosetheater.html")
 
-@app.route("/results")
-def results():
-    return render_template("results.html")
+@app.route("/theaterresults")
+def theaterresults():
+    return render_template("theaterresults.html")
 
 if __name__ == '__main__':
     app.run()
