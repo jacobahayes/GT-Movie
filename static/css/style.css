@@ -253,3 +253,12 @@ input[type="checkbox"] {
     margin-right: 1em;
     margin-top: .53em;
 }
+input[type="submit"] {
+    /* Hides the default checkbox style */
+    background-color: #999999;
+    width: 10.000em;
+    -webkit-transition: .15s;
+    border-radius: 2em;
+    margin-right: 1em;
+    margin-top: .53em;
+}

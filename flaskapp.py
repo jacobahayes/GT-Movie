@@ -38,13 +38,41 @@ def review():
 def give_review():
     return render_template("givereview.html")
 
-@app.route("/choosetheater")
+@app.route("/choosetheater", methods=['GET', 'POST'])
 def choose_theater():
-    return render_template("choosetheater.html")
+    if request.method == 'GET':
+        return render_template("choosetheater.html")
+    if request.method == 'POST':
+        try:
+            theater = request.form['Choose']
+            #return render_template("selecttime.html") 
+            return redirect("/selecttime/" + theater)
+        except:
+            search = request.form['Search']
+            return redirect("/theaterresults/" + search)
 
-@app.route("/theaterresults")
-def theaterresults():
-    return render_template("theaterresults.html")
+@app.route("/theaterresults/<keyword>", methods=['GET', 'POST'])
+def theaterresults(keyword):
+    if request.method == 'GET':
+        #do stuff with keyword
+        return render_template("theaterresults.html")
+    if request.method == 'POST':
+        #Do query with keyword
+        theater = request.form['theater']
+        try:
+            saveTheater = request.form['saveTheater']
+            if (saveTheater == 'check'):
+                #SQL
+                print("Save theater")
+        except:
+            #SQL
+            print("Don't save")
+        return redirect("/selecttime/" + theater)
+
+@app.route("/selecttime/<theater>", methods=['GET', 'POST'])
+def selecttime(theater):
+    #Do query with theater
+    return render_template("selecttime.html", theater=theater)
 
 if __name__ == '__main__':
     app.run()

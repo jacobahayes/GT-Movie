@@ -8,24 +8,27 @@
 
     <hr>
 
-    <h3>Saved Theater:
-        <select>
-            <option value="AMC">AMC</option>
-            <option value="Carmike">Carmike</option>
-        </select>
-        <button>Choose</button>
-    </h3>
+    <form method="POST" action="choosetheater">
+        <h3>Saved Theater:
+            <select name="Choose">
+                <option value="AMC">AMC</option>
+                <option value="Carmike">Carmike</option>
+            </select>
+            <input type="submit" value="Choose"> 
+        </h3>
+    </form>
 
-    <h3>City/State/Theater:
-        <div class="field-wrap">
-            <input type="email"required autocomplete="off"/>
-        </div>
-    </h3>
-
+    <form method="POST" action="choosetheater">
+        <h3>City/State/Theater:
+            <div class="field-wrap">
+                <input type="textarea" name="Search"/>
+                <input type="submit" value="Search"> 
+            </div>
+        </h3>
+    </form>
 
     <h3>
         <button><a href="{{ url_for('movie') }}">Back</a></button>
-        <button><a href="{{ url_for('theaterresults') }}">Search</a></button>
     </h3>
 
 </div> <!-- /form -->
