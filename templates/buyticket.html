@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Buy Ticket</h1>
+        <h2>{{theater}} at {{time}}</h2>
+    </div>
+
+    <hr>
+
+    <form method="POST" action="/paymentinfo">
+        <input type="hidden" name="theater" value="{{theater}}">
+        <input type="hidden" name="time" value="{{time}}">
+        <h3>How many Senior tickets?
+            <select name="Senior">
+                {% for i in nums %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+        </h3>
+        <h3>How many Adult tickets?
+            <select name="Adult">
+                {% for i in nums %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+        </h3>
+        <h3>How many Children tickets?
+            <select name="Children">
+                {% for i in nums %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+        </h3>
+        <input type="submit" value="Next"> 
+    </form>
+
+</div> <!-- /form -->
+{% endblock %}

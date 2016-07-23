@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Movie Title</h1>
+        <h3>Payment Info:</h3>
+    </div>
+
+    <hr>
+
+    <form method="POST" action="choosetheater">
+        <h3>Payment Info:
+            <select name="Choose">
+                <option value="AMC">AMC</option>
+                <option value="Carmike">Carmike</option>
+            </select>
+            <input type="submit" value="Choose"> 
+        </h3>
+    </form>
+
+    <form method="POST" action="choosetheater">
+        <h3>City/State/Theater:
+            <div class="field-wrap">
+                <input type="textarea" name="Search"/>
+                <input type="submit" value="Search"> 
+            </div>
+        </h3>
+    </form>
+
+    <h3>
+        <button><a href="{{ url_for('movie') }}">Back</a></button>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}

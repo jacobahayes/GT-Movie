@@ -71,8 +71,22 @@ def theaterresults(keyword):
 
 @app.route("/selecttime/<theater>", methods=['GET', 'POST'])
 def selecttime(theater):
-    #Do query with theater
-    return render_template("selecttime.html", theater=theater)
+    if request.method == 'GET':
+        #Do query with theater
+        #Get times
+        times = ['1:00pm', '3:00pm', '5:00pm', '7:00pm']
+        return render_template("selecttime.html", times=times, theater=theater)
+    if request.method == 'POST':
+        try:
+            time = request.form['showtime']
+        except:
+            time = 'n/a'
+        nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        return render_template("buyticket.html", nums=nums, theater=theater, time=time)
+
+@app.route("/paymentinfo", methods=['GET', 'POST'])                                                        
+def paymentinfo():                                                                                     
+    return render_template("paymentinfo.html")  
 
 if __name__ == '__main__':
     app.run()
