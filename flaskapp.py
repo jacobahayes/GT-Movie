@@ -9,7 +9,7 @@ app.config.from_pyfile('flaskapp.cfg')
 app.config['MYSQL_USER'] = 'admingu2v3JA'
 app.config['MYSQL_PASSWORD'] = '4eaeGBP2ZlDh'
 app.config['MYSQL_DB'] = 'gtmovie'
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 mysql = MySQL()
 mysql.init_app(app)
