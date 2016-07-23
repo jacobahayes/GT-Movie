@@ -5,22 +5,19 @@ from flask import Flask, request, flash, url_for, redirect, \
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
-mysql = MySQL(app)
+mysql = MySQL()
 app.config.from_pyfile('flaskapp.cfg')
-
-def connection():
-    conn = mysql.connect(host = "127.0.0.1",
-            user = "admingu2v3JA",
-            passwd = "4eaeGBP2ZlDh",
-            db = "gtmovie")
-
-    c = conn.cursor()
-    return c, conn
+app.config['MYSQL_DATABASE_USER'] = 'admingu2v3JA'
+app.config['MYSQL_DATABASE_PASSWORD'] = '4eaeGBP2ZlDh'
+app.config['MYSQL_DATABASE_DB'] = 'gtmovie'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
 
 @app.route('/')
 def index():
     try:
-        c, conn = connection()
+        conn = mysql.connect()
+        cursor = conn.cursor()
         return("okay")
     except Exception as e:
         return(str(e))
@@ -29,7 +26,7 @@ def index():
     #Query for login
     #if(query returns true) login
     #else tell user they're dumba nd to try again
-    return render_template('index.html')
+    #return render_template('index.html')
 
 @app.route('/<path:resource>')
 def serveStaticResource(resource):
