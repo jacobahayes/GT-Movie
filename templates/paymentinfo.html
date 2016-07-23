@@ -3,7 +3,7 @@
 <div class="form">
 
     <div class="top-row">
-        <h1>Movie Title</h1>
+        <h1> {{movie}} </h1>
         <h3>{{theater}} @ {{time}}</h3>
     </div>
 
@@ -11,7 +11,7 @@
 
     <h2>Payment Info:</h2>
 
-    <form method="POST" action="/order">
+    <form method="POST" action="order">
         <h3>Use a saved card
             <select name="savedcard">
                 <option value="AMex">AMex</option>

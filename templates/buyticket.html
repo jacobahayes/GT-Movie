@@ -5,11 +5,13 @@
     <div class="top-row">
         <h1>Buy Ticket</h1>
         <h2>{{theater}} at {{time}}</h2>
+        <h2> {{movie}} </h2>
     </div>
 
     <hr>
 
     <form method="POST" action="/paymentinfo">
+        <input type="hidden" name="movie" value="{{movie}}">
         <input type="hidden" name="theater" value="{{theater}}">
         <input type="hidden" name="time" value="{{time}}">
         <h3>How many Senior tickets?

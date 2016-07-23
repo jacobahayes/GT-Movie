@@ -13,22 +13,18 @@
 
     <hr>
     
-    <table>
-        <tbody>
-            <tr>
-                <td><a href="{{ url_for('movie') }}">Movie A</a></td>
-            </tr>
-            <tr>
-                <td>Movie B</td>
-            </tr>
-            <tr>
-                <td>Movie C</td>
-            </tr>
-            <tr>
-                <td>Movie D</td>
-            </tr>
-        </tbody>
-    </table>
+    <form method="POST" action="movie">
+        <table>
+            <tbody>
+                {% for i in movies %}
+                <tr>
+                    <td><input type="radio" name="movie" value="{{i}}">{{i}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Select Movie"> 
+    </form>
 
 </div> <!-- /form -->
 {% endblock %}

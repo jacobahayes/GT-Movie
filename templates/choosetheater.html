@@ -3,14 +3,15 @@
 <div class="form">
 
     <div class="top-row">
-        <h1>Movie Title</h1>
+        <h1> {{movie}} </h1>
     </div>
 
     <hr>
 
-    <form method="POST" action="choosetheater">
+    <form method="POST" action="/selecttime">
+        <input type="hidden" name="movie" value="{{movie}}"/>
         <h3>Saved Theater:
-            <select name="Choose">
+            <select name="theater">
                 <option value="AMC">AMC</option>
                 <option value="Carmike">Carmike</option>
             </select>
@@ -18,7 +19,7 @@
         </h3>
     </form>
 
-    <form method="POST" action="choosetheater">
+    <form method="POST" action="/theaterresults">
         <h3>City/State/Theater:
             <div class="field-wrap">
                 <input type="textarea" name="Search"/>

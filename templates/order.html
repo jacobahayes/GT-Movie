@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Movie Title</h1>
+    </div>
+
+    <hr>
+
+    <h2>Confirmation:</h2>
+
+    <hr>
+    
+    <h3>Order ID {{orderNo}}</h3>
+
+    <button><a href="{{ url_for('nowplaying') }}">Home</a></button>
+
+</div> <!-- /form -->
+{% endblock %}

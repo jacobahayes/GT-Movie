@@ -11,19 +11,19 @@
 <div class="form">
 
     <div class="top-row">
-        <h1>Movie Title</h1>
+        <h1> {{movie}} </h1>
     </div>
 
     <hr>
 
     <h2>
-        <button><a href="{{ url_for('overview') }}">Overview</a></button>
+        <button><a href="{{ url_for('overview', movie=movie) }}">Overview</a></button>
     </h2>
     <h2>
-        <button><a href="{{ url_for('review') }}">Give Review</a></button>
+        <button><a href="{{ url_for('review', movie=movie) }}">Give Review</a></button>
     </h2>
     <h2>
-        <button><a href="{{ url_for('choose_theater') }}">Buy Ticket</a></button>
+        <button><a href="{{ url_for('choose_theater', movie=movie) }}">Buy Ticket</a></button>
     </h2>
 
     <h3>

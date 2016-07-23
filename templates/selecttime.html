@@ -9,13 +9,15 @@
 
     <hr>
     
-    <form method="POST" action="/selecttime/{{theater}}">
+    <form method="POST" action="/buyticket">
+        <input type="hidden" name="movie" value="{{movie}}"/> 
+        <input type="hidden" name="theater" value="{{theater}}"/> 
         <table>
             <tbody>
                     {% for time in times %}
                     <tr>
                         <td>
-                            <input type="radio" name="showtime" value="{{time}}">{{time}}<br> 
+                            <input type="radio" name="time" value="{{time}}">{{time}}<br> 
                         </td>
                     </tr>
                     {% endfor %}
