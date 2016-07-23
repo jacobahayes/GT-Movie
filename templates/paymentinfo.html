@@ -4,33 +4,50 @@
 
     <div class="top-row">
         <h1>Movie Title</h1>
-        <h3>Payment Info:</h3>
+        <h3>{{theater}} @ {{time}}</h3>
     </div>
 
     <hr>
 
-    <form method="POST" action="choosetheater">
-        <h3>Payment Info:
-            <select name="Choose">
-                <option value="AMC">AMC</option>
-                <option value="Carmike">Carmike</option>
+    <h2>Payment Info:</h2>
+
+    <form method="POST" action="/order">
+        <h3>Use a saved card
+            <select name="savedcard">
+                <option value="AMex">AMex</option>
+                <option value="Visa">Visa</option>
             </select>
             <input type="submit" value="Choose"> 
         </h3>
     </form>
 
-    <form method="POST" action="choosetheater">
-        <h3>City/State/Theater:
+    <h2>Use a new card:</h2>
+    <form method="POST" action="/order">
+        <h3>Name on Card:
             <div class="field-wrap">
-                <input type="textarea" name="Search"/>
-                <input type="submit" value="Search"> 
+                <input type="textarea" name="name"/>
             </div>
         </h3>
-    </form>
+        <h3>Card Number:
+            <div class="field-wrap">
+                <input type="textarea" name="name"/>
+            </div>
+        </h3>
+        <h3>CVV:
+            <div class="field-wrap">
+                <input type="textarea" name="name"/>
+            </div>
+        </h3>
+        <h3>Expiration Date:
+            <div class="field-wrap">
+                <input type="textarea" name="name"/>
+            </div>
+        </h3>
 
-    <h3>
-        <button><a href="{{ url_for('movie') }}">Back</a></button>
-    </h3>
+        <input type="checkbox" name="saveCard" value="check">Save Card<br>
+
+        <input type="submit" value="Submit"> 
+    </form>
 
 </div> <!-- /form -->
 {% endblock %}

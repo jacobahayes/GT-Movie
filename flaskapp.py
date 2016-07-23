@@ -86,7 +86,16 @@ def selecttime(theater):
 
 @app.route("/paymentinfo", methods=['GET', 'POST'])                                                        
 def paymentinfo():                                                                                     
-    return render_template("paymentinfo.html")  
+    try:
+        time = request.form['time']
+        theater = request.form['theater']
+        sen = request.form['Senior']
+        adult = request.form['Adult']
+        children = request.form['Children']
+        return render_template("paymentinfo.html", theater=theater, time=time)  
+    except:
+        return render_template("paymentinfo.html")  
+
 
 if __name__ == '__main__':
     app.run()
