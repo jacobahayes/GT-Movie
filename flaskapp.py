@@ -40,7 +40,15 @@ def serveStaticResource(resource):
 
 @app.route("/nowplaying", methods=['GET', 'POST'])
 def nowplaying():
-    return render_template("nowplaying.html", movies=["Captain America", "SpongeBob", "Cool", "Big Fish"])
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.callproc('nowplaying_GetNowPlayingTitles') 
+        result = []
+        for record in cursor:
+            result.append[str(record)]
+        return render_template("nowplaying.html", movies=results)
+    except:
+        return render_template("nowplaying.html", movies=["Captain America", "SpongeBob", "Cool", "Big Fish"])
 
 @app.route("/me")
 def me():
@@ -61,7 +69,11 @@ def overview():
 
 @app.route("/review")
 def review():
-    return render_template("review.html")
+    try:
+        movie = request.form["movie"]
+    except:
+        movie = "movie"
+    return render_template("review.html", movie=movie)
 
 @app.route("/givereview")
 def give_review():
