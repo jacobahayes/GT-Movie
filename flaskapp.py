@@ -2,12 +2,33 @@ import os
 from datetime import datetime
 from flask import Flask, request, flash, url_for, redirect, \
      render_template, abort, send_from_directory
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
+mysql = MySQL(app)
 app.config.from_pyfile('flaskapp.cfg')
+
+def connection():
+    conn = mysql.connect(host = "localhost",
+            user = "admingu2v3JA",
+            passwd = "4eaeGBP2ZlDh",
+            db = "gtmovie")
+
+    c = conn.cursor()
+    return c, conn
 
 @app.route('/')
 def index():
+    try:
+        c, conn = connection()
+        return("okay")
+    except Exception as e:
+        return(str(e))
+
+
+    #Query for login
+    #if(query returns true) login
+    #else tell user they're dumba nd to try again
     return render_template('index.html')
 
 @app.route('/<path:resource>')
