@@ -17,8 +17,8 @@ mysql.init_app(app)
 @app.route('/')
 def index():
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
+        #conn = mysql.connect()
+        cursor = mysql.connection.cursor()
         return("okay")
     except Exception as e:
         return(str(e))
