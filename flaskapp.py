@@ -9,7 +9,7 @@ mysql = MySQL(app)
 app.config.from_pyfile('flaskapp.cfg')
 
 def connection():
-    conn = mysql.connect(host = "localhost",
+    conn = mysql.connect(host = "127.0.0.1",
             user = "admingu2v3JA",
             passwd = "4eaeGBP2ZlDh",
             db = "gtmovie")
