@@ -43,9 +43,10 @@ def nowplaying():
     try:
         cursor = mysql.connection.cursor()
         cursor.callproc('nowplaying_GetNowPlayingTitles') 
+        record = cursor.fetchall()
         result = []
-        for record in cursor:
-            result.append[str(record)]
+        for r in record:
+            result.append[str(r[0])]
         return render_template("nowplaying.html", movies=results)
     except:
         return render_template("nowplaying.html", movies=["Captain America", "SpongeBob", "Cool", "Big Fish"])
