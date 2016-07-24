@@ -17,10 +17,14 @@
     <hr>
 
     <h2>
-        <button><a href="{{ url_for('overview', movie=movie) }}">Overview</a></button>
+        <form action="overview" method="post">
+            <button name="movie" value="{{movie}}">Overview</button>
+        </form>
     </h2>
     <h2>
-        <button><a href="{{ url_for('review', movie=movie) }}">Give Review</a></button>
+        <form action="review" method="post">
+            <button name="movie" value="{{movie}}">Give Review</button>
+        </form>
     </h2>
     <h2>
         <form action="choosetheater" method="post">
@@ -29,7 +33,7 @@
     </h2>
 
     <h3>
-        <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
+         <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
     </h3>
 
 </div> <!-- /form -->

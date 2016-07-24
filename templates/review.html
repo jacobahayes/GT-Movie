@@ -4,29 +4,24 @@
 
     <div class="top-row">
         <h1> {{movie}} </h1>
-        <p>Avg. Rating: x/5</p>
+        <p>Avg. Rating: {{avg}}/5</p>
     </div>
 
     <hr>
 
-    <button><a href="{{ url_for('give_review') }}">Give Review</a></button>
+    <form action="givereview" method="post">
+        <button name="movie" value="{{movie}}">Give Review</button>
+    </form>
 
     <hr>
     
     <table>
         <tbody>
+            {% for r in reviews %}
             <tr>
-                <td>Review 1</td>
+                <td> {{r}} </td>
             </tr>
-            <tr>
-                <td>Review 2</td>
-            </tr>
-            <tr>
-                <td>Review 3</td>
-            </tr>
-            <tr>
-                <td>Review 4</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 

@@ -66,17 +66,38 @@ def movie():
 def overview():
     return render_template("overview.html")
 
-@app.route("/review")
+@app.route("/review", methods=['GET', 'POST'])
 def review():
+    reviews = ['Cool', 'Awesome', 'Two Thumbs Up']
+    avg = '4.5'
     try:
         movie = request.form["movie"]
     except:
         movie = "movie"
-    return render_template("review.html", movie=movie)
+    return render_template("review.html", avg=avg, reviews=reviews, movie=movie)
 
-@app.route("/givereview")
+@app.route("/givereview", methods=['GET', 'POST'])
 def give_review():
-    return render_template("givereview.html")
+    if request.method == 'POST':
+        try:
+            movie = request.form['movie']
+        except:
+            movie = "Error"
+        return render_template("givereview.html", movie=movie)
+
+@app.route("/procreview", methods=['POST'])
+def proc_review():
+        try:
+            movie = request.form['movie']
+            rating = request.form['rating']
+            try:
+                comment = request.form['comment']
+            except:
+                comment = "" 
+            return redirect(url_for('movie', movie=movie), code=307)
+        except:
+            return "Sorry failed"
+
 
 @app.route("/choosetheater", methods=['GET', 'POST'])
 def choose_theater():

@@ -3,16 +3,16 @@
 <div class="form">
 
     <div class="top-row">
-        <h1>Movie Title</h1>
+        <h1> {{movie}} </h1>
     </div>
 
     <hr>
 
     <div class="form">
-        <form action="/" method="post">
-
+        <form action="/procreview" method="post">
+            <input type="hidden" name="movie" value="{{movie}}"/>
             <h3>Rating:
-                <select>
+                <select name="rating">
                     <option value="5">5</option>
                     <option value="4">4</option>
                     <option value="3">3</option>
@@ -21,18 +21,13 @@
                 </select>
             </h3>
 
-          <div class="field-wrap">
-            <label>
-              Title<span class="req">*</span>
-            </label>
-            <input type="email"required autocomplete="off"/>
-          </div>
+            <h3>Title: {{movie}}</h3>
           
           <div class="field-wrap">
             <label>
               Comment<span class="req">*</span>
             </label>
-            <input type="textarea"required autocomplete="off"/>
+            <input type="textarea" name="comment" autocomplete="off"/>
           </div>
           
           <button type="submit" class="button button-block"/>Submit</button>
