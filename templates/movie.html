@@ -23,7 +23,9 @@
         <button><a href="{{ url_for('review', movie=movie) }}">Give Review</a></button>
     </h2>
     <h2>
-        <button><a href="{{ url_for('choose_theater', movie=movie) }}">Buy Ticket</a></button>
+        <form action="choosetheater" method="post">
+            <button name="movie" value="{{movie}}">Buy Ticket</button>
+        </form>
     </h2>
 
     <h3>

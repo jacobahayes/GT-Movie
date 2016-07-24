@@ -57,6 +57,8 @@ def me():
 
 @app.route("/movie", methods=['GET', 'POST'])
 def movie():
+    if request.method == 'GET':
+        return render_template("movie.html", movie=movie)
     if request.method == 'POST':
         try:
             movie = request.form['movie']
@@ -80,19 +82,27 @@ def review():
 def give_review():
     return render_template("givereview.html")
 
-@app.route("/choosetheater/<movie>", methods=['GET', 'POST'])
-def choose_theater(movie):
+@app.route("/choosetheater", methods=['GET', 'POST'])
+def choose_theater():
     if request.method == 'GET':
+        return render_template("choosetheater.html", movie=movie)
+    if request.method == 'POST':
+        try:
+            movie = request.form['movie']
+        except:
+            movie = "Error"
         return render_template("choosetheater.html", movie=movie)
 
 @app.route("/theaterresults", methods=['GET', 'POST'])
 def theaterresults():
     if request.method == 'POST':
         try:
+            movie = request.form['movie']
             search = request.form['Search']
             #do stuff with keyword
             results = search
         except:
+            movie = "Error"
             results = "ERROR"
         return render_template("theaterresults.html", movie=movie, results=results)
 
