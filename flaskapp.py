@@ -98,6 +98,7 @@ def overview():
     if request.method == 'POST':
         data = {}
         try:
+            usern = request.form['usern']
             movie = str(request.form['movie'])
             cursor = mysql.connection.cursor()
             cursor.execute("CALL overview_GetOVerviewData ('"+movie+"');")
@@ -117,7 +118,7 @@ def overview():
             data['cast']['role5'] = str(result[11])
         except Exception as e:
             return str(e)
-        return render_template("overview.html", data=data, movie=movie)
+        return render_template("overview.html", usern=usern, data=data, movie=movie)
 
 @app.route("/review", methods=['GET', 'POST'])
 def review():
