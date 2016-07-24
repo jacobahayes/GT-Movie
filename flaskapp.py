@@ -167,14 +167,18 @@ def choose_theater():
 @app.route("/theaterresults", methods=['GET', 'POST'])
 def theaterresults():
     if request.method == 'POST':
+        results =[]
         try:
             movie = request.form['movie']
             search = request.form['Search']
-            #do stuff with keyword
-            results = search
-        except:
-            movie = "Error"
-            results = "ERROR"
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL chooseTheater_searchTheater ('"+search+"','"+movie+"');")
+            sResults = cursor.fetchall()
+            print sResults
+            for t in sResults:
+                results.append(str(t[0])+': '+str(t[1])+' '+str(t[2])+', '+str(t[3]))
+        except Exception as e:
+            return str(e)
         return render_template("theaterresults.html", movie=movie, results=results)
 
 @app.route("/selecttime", methods=['GET', 'POST'])
