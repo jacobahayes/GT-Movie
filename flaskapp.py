@@ -158,10 +158,17 @@ def choose_theater():
     if request.method == 'GET':
         return render_template("choosetheater.html", movie=movie)
     if request.method == 'POST':
+        uname = 'Asa' #change to get current user
+        theaters = []
         try:
             movie = request.form['movie']
-        except:
-            movie = "Error"
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL chooseTheater_GetSaved ('"+uname+"','"+movie+"');")
+            result = cursor.fetchall()
+            for r in result:
+                theaters.append(r[1])
+        except Exception as e:
+            return str(e)
         return render_template("choosetheater.html", movie=movie)
 
 @app.route("/theaterresults", methods=['GET', 'POST'])
@@ -174,7 +181,6 @@ def theaterresults():
             cursor = mysql.connection.cursor()
             cursor.execute("CALL chooseTheater_searchTheater ('"+search+"','"+movie+"');")
             sResults = cursor.fetchall()
-            print sResults
             for t in sResults:
                 results.append(str(t[0])+': '+str(t[1])+' '+str(t[2])+', '+str(t[3]))
         except Exception as e:
@@ -184,23 +190,27 @@ def theaterresults():
 @app.route("/selecttime", methods=['GET', 'POST'])
 def selecttime():
     if request.method == 'POST':
-        #Do query with theater
-        #Get times
+        times = []
         try:
-            theater = request.form['theater']
+            theater ='1' # request.form['theater']
             movie = request.form['movie']
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL selectTime_GetShowtimes ('"+movie+"','"+theater+"');")
+            result = cursor.fetchall()
+            print result
+            for r in result:
+                times.append(r[0])
             try:
                 saveTheater = request.form['saveTheater']
                 if (saveTheater == 'check'):
-                    #SQL
+                    #SQL to save theater
                     print("Save theater")
-            except:
-                pass
-        except:
-            theater = "Error"
-            movie = "Error"
-        times = ['1:00pm', '3:00pm', '5:00pm', '7:00pm']
+            except Exception as e:
+                return str(e)
+        except Exception as e:
+            return str(e)
         return render_template("selecttime.html", movie=movie, times=times, theater=theater)
+
 
 @app.route("/buyticket", methods=['GET', 'POST'])                                                        
 def buyticket():                                                                                     
