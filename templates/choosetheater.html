@@ -12,11 +12,16 @@
         <input type="hidden" name="movie" value="{{movie}}"/>
         <input type="hidden" name="usern" value="{{usern}}"/>
         <h3>Saved Theater:
-            <select name="theater">
-                <option value="AMC">AMC</option>
-                <option value="Carmike">Carmike</option>
-            </select>
+            {% if theaters|length > 0 %}
+                <select name="theater">
+                {% for t in theaters %}
+                    <option value="{{t.id}}">{{t.name}}</option>
+                {% endfor %}
+                </select>
             <input type="submit" value="Choose"> 
+            {% else %}
+                No saved theaters are playing this movie
+            {% endif %}
         </h3>
     </form>
 
