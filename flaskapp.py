@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'gtmovie'
 #app.config['MYSQL_HOST'] = '127.6.155.2'
 #app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 3307
+app.config['MYSQL_PORT'] = 3306
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -112,13 +112,23 @@ def overview():
 
 @app.route("/review", methods=['GET', 'POST'])
 def review():
-    reviews = ['Cool', 'Awesome', 'Two Thumbs Up']
-    avg = '4.5'
-    try:
-        movie = request.form["movie"]
-    except:
-        movie = "movie"
-    return render_template("review.html", avg=avg, reviews=reviews, movie=movie)
+    if request.method == 'POST':
+        reviews = []
+        comments = []
+        try:
+            movie = request.form["movie"]
+            cursor = mysql.connection.cursor()
+            cursor.execute("SELECT util_GetAvgReviewRating ('"+movie+"');")
+            avg = cursor.fetchone()[0]
+            cursor.execute("CALL viewReviews_GetViewReviewsData ('"+movie+"');")
+            result = cursor.fetchall()
+            print result
+            for r in result:
+                reviews.append(r[0])
+                comments.append(r[2])
+        except:
+            movie = "movie"
+        return render_template("review.html", avg=avg, reviews=reviews, movie=movie)
 
 @app.route("/givereview", methods=['GET', 'POST'])
 def give_review():
