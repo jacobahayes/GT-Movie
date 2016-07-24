@@ -11,6 +11,7 @@
     <div class="form">
         <form action="/procreview" method="post">
             <input type="hidden" name="movie" value="{{movie}}"/>
+            <input type="hidden" name="usern" value="{{usern}}"/>
             <h3>Rating:
                 <select name="rating">
                     <option value="5">5</option>
@@ -37,7 +38,9 @@
         </div>
 
     <h3>
-        <button><a href="{{ url_for('review') }}">Back</a></button>
+        <form action="nowplaying" method="post">
+            <button name="usern" value="{{usern}}">Back</button>
+        </form>
     </h3>
 
 </div> <!-- /form -->

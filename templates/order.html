@@ -14,7 +14,9 @@
     
     <h3>Order ID {{orderNo}}</h3>
 
-    <button><a href="{{ url_for('nowplaying') }}">Home</a></button>
+    <form action="nowplaying" method="post">
+        <button name="usern" value="{{usern}}">Home</button>
+    </form>
 
 </div> <!-- /form -->
 {% endblock %}

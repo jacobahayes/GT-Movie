@@ -10,22 +10,24 @@
 
     <h2>
         <form action="orderhistory" method="post">
-            <button name="user" value="{{user}}">My Order History</button>
+            <button name="usern" value="{{usern}}">My Order History</button>
         </form>
     </h2>
     <h2>
         <form action="preferredpayment" method="post">
-            <button name="user" value="{{user}}">My Payment Information</button>
+            <button name="usern" value="{{usern}}">My Payment Information</button>
         </form>
     </h2>
     <h2>
         <form action="preferredtheater" method="post">
-            <button name="user" value="{{user}}">My Preferred Theater</button>
+            <button name="usern" value="{{usern}}">My Preferred Theater</button>
         </form>
     </h2>
 
     <h3>
-        <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
+        <form action="nowplaying" method="post">
+            <button name="usern" value="{{usern}}">Back</button>
+        </form>
     </h3>
 
 </div> <!-- /form -->

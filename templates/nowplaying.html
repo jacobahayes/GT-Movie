@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 
-<a href="{{ url_for('me') }}">
-    <img src="{{ url_for('static', filename='me.png') }}" height="60px">
-</a>
+<form method="POST" action="me">
+    <button name="usern" value="{{usern}}">My Profile</button>
+</form>
 
 <div class="form">
 
@@ -14,6 +14,7 @@
     <hr>
     
     <form method="POST" action="movie">
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <table>
             <tbody>
                 {% for i in movies %}

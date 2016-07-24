@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'gtmovie'
 #app.config['MYSQL_HOST'] = '127.6.155.2'
 #app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_PORT'] = 3307
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -22,7 +22,7 @@ def index():
         return render_template('index.html')
     if request.method == 'POST':
         try:
-            usern = request.form['username']
+            usern = request.form['usern']
             passw = request.form['password']
             cursor = mysql.connection.cursor()
             cursor.execute('SELECT gtmovie.login_AuthenticateUser(%s,%s) AS login_AuthenticateUser',(usern,passw)) 
@@ -31,7 +31,7 @@ def index():
                 result += str(record)
             cursor.close()
             if int(result[1]) == 1:
-                return redirect(url_for("nowplaying"))
+                return redirect(url_for("nowplaying", usern=str(usern)), code=307)
             else:
                 return render_template("index.html")
         except Exception as e:
@@ -43,6 +43,11 @@ def serveStaticResource(resource):
 
 @app.route("/nowplaying", methods=['GET', 'POST'])
 def nowplaying():
+    try:
+        usern = request.form['usern']
+        print str(usern)
+    except Exception as e:
+        return(str(e))
     cursor = mysql.connection.cursor()
     cursor.callproc('nowplaying_GetNowPlayingTitles')
     record = cursor.fetchall()
@@ -50,11 +55,15 @@ def nowplaying():
     for r in record:
         result.append(str(r[0]))
     cursor.close()
-    return render_template('nowplaying.html', movies=result)
+    return render_template('nowplaying.html', usern=usern, movies=result)
 
-@app.route("/me")
+@app.route("/me", methods=['GET', 'POST'])
 def me():
-    return render_template("me.html")
+    try:
+        usern = request.form['usern']
+    except Exception as e:
+        return(str(e))
+    return render_template("me.html", usern=usern)
 
 @app.route("/movie", methods=['GET', 'POST'])
 def movie():
@@ -62,6 +71,7 @@ def movie():
         return render_template("movie.html", movie=movie)
     if request.method == 'POST':
         try:
+            usern = str(request.form['usern'])
             movie = str(request.form['movie'])
             cursor = mysql.connection.cursor()
             cursor.execute("CALL movie_GetMovieData ('"+movie+"');")
@@ -85,29 +95,27 @@ def movie():
 @app.route("/overview", methods=['GET', 'POST'])
 def overview():
     if request.method == 'POST':
+        data = {}
         try:
             movie = str(request.form['movie'])
             cursor = mysql.connection.cursor()
             cursor.execute("CALL overview_GetOVerviewData ('"+movie+"');")
             result = cursor.fetchone()
-            syn = str(result[1])
-            actor1 = str(result[2])
-            role1 = str(result[3])
-            actor2 = str(result[4])
-            role2 = str(result[5])
-            actor3 = str(result[6])
-            role3 = str(result[7])
-            actor4 = str(result[8])
-            role4 = str(result[9])
-            actor5 = str(result[10])
-            role5 = str(result[11])
-            cast = "Some stuff about actors"
+            cursor.close()
+            data['syn'] = str(result[1])
+            data['cast'] = {}
+            data['cast']['actor1'] = str(result[2])
+            data['cast']['role1'] = str(result[3])
+            data['cast']['actor2'] = str(result[4])
+            data['cast']['role2'] = str(result[5])
+            data['cast']['actor3'] = str(result[6])
+            data['cast']['role3'] = str(result[7])
+            data['cast']['actor4'] = str(result[8])
+            data['cast']['role4'] = str(result[9])
+            data['cast']['actor5'] = str(result[10])
+            data['cast']['role5'] = str(result[11])
         except Exception as e:
-            print str(e)
-            movie = "Error"
-            syn = "Movie is cool"
-            cast = "Some stuff about actors"
-        data = {'syn': syn, 'cast': cast}
+            return str(e)
         return render_template("overview.html", data=data, movie=movie)
 
 @app.route("/review", methods=['GET', 'POST'])
@@ -116,6 +124,7 @@ def review():
         reviews = []
         comments = []
         try:
+            usern = str(request.form['usern'])
             movie = request.form["movie"]
             cursor = mysql.connection.cursor()
             cursor.execute("SELECT util_GetAvgReviewRating ('"+movie+"');")
@@ -127,13 +136,14 @@ def review():
                 reviews.append(r[0])
                 comments.append(r[2])
         except:
-            movie = "movie"
-        return render_template("review.html", avg=avg, reviews=reviews, movie=movie)
+            return "Error"
+        return render_template("review.html", usern=usern, avg=avg, reviews=reviews, movie=movie)
 
 @app.route("/givereview", methods=['GET', 'POST'])
 def give_review():
     if request.method == 'POST':
         try:
+            usern = str(request.form['usern'])
             movie = request.form['movie']
         except:
             movie = "Error"
@@ -143,12 +153,13 @@ def give_review():
 def proc_review():
         try:
             movie = request.form['movie']
+            usern = str(request.form['usern'])
             rating = request.form['rating']
             try:
                 comment = request.form['comment']
             except:
                 comment = "" 
-            return redirect(url_for('movie', movie=movie), code=307)
+            return redirect(url_for('movie', usern=usern, movie=movie), code=307)
         except:
             return "Sorry failed"
 
@@ -161,6 +172,7 @@ def choose_theater():
         uname = 'Asa' #change to get current user
         theaters = []
         try:
+            usern = str(request.form['usern'])
             movie = request.form['movie']
             cursor = mysql.connection.cursor()
             cursor.execute("CALL chooseTheater_GetSaved ('"+uname+"','"+movie+"');")
@@ -169,13 +181,14 @@ def choose_theater():
                 theaters.append(r[1])
         except Exception as e:
             return str(e)
-        return render_template("choosetheater.html", movie=movie)
+        return render_template("choosetheater.html", usern=usern, movie=movie)
 
 @app.route("/theaterresults", methods=['GET', 'POST'])
 def theaterresults():
     if request.method == 'POST':
         results =[]
         try:
+            usern = str(request.form['usern'])
             movie = request.form['movie']
             search = request.form['Search']
             cursor = mysql.connection.cursor()
@@ -185,14 +198,16 @@ def theaterresults():
                 results.append(str(t[0])+': '+str(t[1])+' '+str(t[2])+', '+str(t[3]))
         except Exception as e:
             return str(e)
-        return render_template("theaterresults.html", movie=movie, results=results)
+        return render_template("theaterresults.html", usern=usern, movie=movie, results=results)
 
 @app.route("/selecttime", methods=['GET', 'POST'])
 def selecttime():
     if request.method == 'POST':
         times = []
         try:
-            theater ='1' # request.form['theater']
+            theaterID ='1' # request.form['theater']
+            usern = str(request.form['usern'])
+            theater = request.form['theater']
             movie = request.form['movie']
             cursor = mysql.connection.cursor()
             cursor.execute("CALL selectTime_GetShowtimes ('"+movie+"','"+theater+"');")
@@ -205,86 +220,95 @@ def selecttime():
                 if (saveTheater == 'check'):
                     #SQL to save theater
                     print("Save theater")
-            except Exception as e:
-                return str(e)
+            except:
+                pass
         except Exception as e:
             return str(e)
-        return render_template("selecttime.html", movie=movie, times=times, theater=theater)
+        return render_template("selecttime.html", usern=usern, movie=movie, times=times, theater=theater)
 
 
 @app.route("/buyticket", methods=['GET', 'POST'])                                                        
 def buyticket():                                                                                     
     if request.method == 'POST':
         try:
+            usern = str(request.form['usern'])
             theater = request.form['theater']
             movie = request.form['movie']
             time = request.form['time']
         except:
-            theater = "Error"
-            time = "Error"
-            movie = "Error"
+            return "Error"
         nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-        return render_template("buyticket.html", nums=nums, movie=movie, theater=theater, time=time)
+        return render_template("buyticket.html", usern=usern, nums=nums, movie=movie, theater=theater, time=time)
 
 @app.route("/paymentinfo", methods=['GET', 'POST'])                                                        
 def paymentinfo():                                                                                     
     try:
+        usern = str(request.form['usern'])
         time = request.form['time']
         movie = request.form['movie']
         theater = request.form['theater']
         sen = request.form['Senior']
         adult = request.form['Adult']
         children = request.form['Children']
-        return render_template("paymentinfo.html", movie=movie, theater=theater, time=time)  
+        return render_template("paymentinfo.html", usern=usern, movie=movie, theater=theater, time=time)  
     except:
         return render_template("paymentinfo.html")  
 
 @app.route("/order", methods=['GET', 'POST'])                                                        
 def order():                                                                                     
+    try:
+        usern = str(request.form['usern'])
+    except:
+        return "Error"
     return render_template("order.html", orderNo='1234')  
 
 @app.route("/orderhistory", methods=['GET', 'POST'])                                                        
 def orderhistory():                                                                                     
     orders = ['1', '2', '3', '4']
     try:
-        movie = request.form['movie']
-    except:
-        movie = "Error"
-    return render_template("orderhistory.html", movie=movie, orders=orders)  
+        usern = str(request.form['usern'])
+    except Exception as e:
+        return(str(e)) 
+    return render_template("orderhistory.html", usern=usern, orders=orders)  
 
 @app.route("/orderdetail", methods=['GET', 'POST'])                                                        
 def orderdetail():                                                                                     
     try:
-        movie = request.form['movie']
-    except:
-        movie = "Error"
-    return render_template("orderdetail.html", movie=movie)  
+        order = request.form['order']
+        usern = str(request.form['usern'])
+    except Exception as e:
+        return(str(e)) 
+    return render_template("orderdetail.html", usern=usern, order=order)  
 
 @app.route("/preferredpayment", methods=['GET', 'POST'])
 def preferredpayment():
     payments = ['1', '2', '3', '4']
-    if request.method == 'GET':
-        return render_template("preferredpayment.html", payments=payments)
     if request.method == 'POST':
         try:
-            payment = str(request.form['payment'])
-            #payments = payments.remove(payment)
+            usern = str(request.form['usern'])
+            try:
+                payment = str(request.form['payment'])
+                #payments = payments.remove(payment)
+            except:
+                pass
         except:
-            pass
-        return render_template("preferredpayment.html", payments=payments)
+            return "Error"
+        return render_template("preferredpayment.html", usern=usern, payments=payments)
 
 @app.route("/preferredtheater", methods=['GET', 'POST'])
 def preferredtheaters():
     if request.method == 'POST':
         try:
-            movie = request.form['movie']
-            search = request.form['Search']
-            #do stuff with keyword
-            results = search
-        except:
-            movie = "Error"
-            results = "ERROR"
-        return render_template("preferredtheater.html")
+            usern = str(request.form['usern'])
+            try:
+                search = request.form['Search']
+                #do stuff with keyword
+                results = search
+            except:
+                results = "ERROR"
+        except Exception as e:
+            return(str(e)) 
+        return render_template("preferredtheater.html", usern=usern)
 
 if __name__ == '__main__':
     app.run()

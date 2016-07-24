@@ -9,12 +9,17 @@
     <hr>
     
     <form method="POST" action="/preferredtheater">
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <input type="radio" name="theater" value="A" checked>Theater A<br>
         <input type="radio" name="theater" value="B">Theater B<br>
         <input type="radio" name="theater" value="C">Theater C<br>
         <input type="radio" name="theater" value="D">Theater D<br>
 
         <input type="submit" value="Delete">
+    </form>
+
+    <form action="me" method="post">
+        <button name="usern" value="{{usern}}">Back</button>
     </form>
 
 </div> <!-- /form -->

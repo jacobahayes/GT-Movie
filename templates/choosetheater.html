@@ -10,6 +10,7 @@
 
     <form method="POST" action="/selecttime">
         <input type="hidden" name="movie" value="{{movie}}"/>
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <h3>Saved Theater:
             <select name="theater">
                 <option value="AMC">AMC</option>
@@ -21,6 +22,7 @@
 
     <form method="POST" action="/theaterresults">
         <input type="hidden" name="movie" value="{{movie}}"/>
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <h3>City/State/Theater:
             <div class="field-wrap">
                 <input type="textarea" name="Search"/>
@@ -30,8 +32,8 @@
     </form>
 
     <h3>
-        <form action="movie" method="post">
-            <button name="movie" value="{{movie}}">Back</button>
+        <form action="nowplaying" method="post">
+            <button name="usern" value="{{usern}}">Back</button>
         </form>
     </h3>
 

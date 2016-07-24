@@ -10,6 +10,7 @@
     <hr>
 
     <form action="givereview" method="post">
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <button name="movie" value="{{movie}}">Give Review</button>
     </form>
 
@@ -27,7 +28,9 @@
 
 
     <h3>
-        <button><a href="{{ url_for('movie') }}">Back</a></button>
+        <form action="nowplaying" method="post">
+            <button name="usern" value="{{usern}}">Back</button>
+        </form>
     </h3>
 
 </div> <!-- /form -->

@@ -10,6 +10,7 @@
     <hr>
 
     <form method="POST" action="/orderhistory">
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <h3>Order ID:
             <div class="field-wrap">
                 <input type="textarea" name="Search"/>
@@ -19,6 +20,7 @@
     </form>
     
     <form method="POST" action="/order">
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <table>
             <tbody>
                 {% for i in orders %}

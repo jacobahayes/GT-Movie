@@ -56,18 +56,22 @@
         </h2>
         <h2>
             <form action="review" method="post">
+                <input type="hidden" name="usern" value="{{usern}}"/>
                 <button name="movie" value="{{data.movie}}">Give Review</button>
             </form>
         </h2>
         <h2>
             <form action="choosetheater" method="post">
+                <input type="hidden" name="usern" value="{{usern}}"/>
                 <button name="movie" value="{{data.movie}}">Buy Ticket</button>
             </form>
         </h2>
     </div>
 
     <h3>
-         <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
+        <form action="nowplaying" method="post">
+            <button name="usern" value="{{usern}}">Back</button>
+        </form>
     </h3>
 
 </div> <!-- /form -->
