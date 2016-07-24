@@ -11,26 +11,60 @@
 <div class="form">
 
     <div class="top-row">
-        <h1> {{movie}} </h1>
+        <h1> {{data.movie}} </h1>
     </div>
 
     <hr>
 
-    <h2>
-        <form action="overview" method="post">
-            <button name="movie" value="{{movie}}">Overview</button>
-        </form>
-    </h2>
-    <h2>
-        <form action="review" method="post">
-            <button name="movie" value="{{movie}}">Give Review</button>
-        </form>
-    </h2>
-    <h2>
-        <form action="choosetheater" method="post">
-            <button name="movie" value="{{movie}}">Buy Ticket</button>
-        </form>
-    </h2>
+    <div style="width:200px; float:left; height:300px">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        Released: {{data.release}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        MPAARating: {{data.MPAArating}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Length: {{data.length}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Genre: {{data.genre}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Avg. Rating: {{data.avgRating}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="width:200px; float:right; height:300px">
+        <h2>
+            <form action="overview" method="post">
+                <button name="movie" value="{{data.movie}}">Overview</button>
+            </form>
+        </h2>
+        <h2>
+            <form action="review" method="post">
+                <button name="movie" value="{{data.movie}}">Give Review</button>
+            </form>
+        </h2>
+        <h2>
+            <form action="choosetheater" method="post">
+                <button name="movie" value="{{data.movie}}">Buy Ticket</button>
+            </form>
+        </h2>
+    </div>
 
     <h3>
          <button><a href="{{ url_for('nowplaying') }}">Back</a></button>
