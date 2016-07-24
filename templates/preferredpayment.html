@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="form">
+
+    <div class="top-row">
+        <h1>My Payment Info</h1>
+    </div>
+
+    <hr>
+    
+    <form method="POST" action="/preferredpayment">
+        <table>
+            <tbody>
+                {% for i in payments %}
+                <tr>
+                    <td><input type="radio" name="payment" value="{{i}}">{{i}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Delete"> 
+    </form>
+
+</div> <!-- /form -->
+{% endblock %}

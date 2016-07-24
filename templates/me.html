@@ -9,13 +9,19 @@
     <hr>
 
     <h2>
-        <a>My Order History</a>
+        <form action="orderhistory" method="post">
+            <button name="user" value="{{user}}">My Order History</button>
+        </form>
     </h2>
     <h2>
-        <a>My Payment Information</a>
+        <form action="preferredpayment" method="post">
+            <button name="user" value="{{user}}">My Payment Information</button>
+        </form>
     </h2>
     <h2>
-        <a>My Preferred Theater</a>
+        <form action="preferredtheater" method="post">
+            <button name="user" value="{{user}}">My Preferred Theater</button>
+        </form>
     </h2>
 
     <h3>

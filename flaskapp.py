@@ -62,9 +62,18 @@ def movie():
             movie = "Error"
         return render_template("movie.html", movie=movie)
 
-@app.route("/overview")
+@app.route("/overview", methods=['GET', 'POST'])
 def overview():
-    return render_template("overview.html")
+    try:
+        movie = request.form['movie']
+        syn = "Movie is cool"
+        cast = "Some stuff about actors"
+    except:
+        movie = "Error"
+        syn = "Movie is cool"
+        cast = "Some stuff about actors"
+    data = {'syn': syn, 'cast': cast}
+    return render_template("overview.html", data=data, movie=movie)
 
 @app.route("/review", methods=['GET', 'POST'])
 def review():
@@ -174,6 +183,49 @@ def paymentinfo():
 @app.route("/order", methods=['GET', 'POST'])                                                        
 def order():                                                                                     
     return render_template("order.html", orderNo='1234')  
+
+@app.route("/orderhistory", methods=['GET', 'POST'])                                                        
+def orderhistory():                                                                                     
+    orders = ['1', '2', '3', '4']
+    try:
+        movie = request.form['movie']
+    except:
+        movie = "Error"
+    return render_template("orderhistory.html", movie=movie, orders=orders)  
+
+@app.route("/orderdetail", methods=['GET', 'POST'])                                                        
+def orderdetail():                                                                                     
+    try:
+        movie = request.form['movie']
+    except:
+        movie = "Error"
+    return render_template("orderdetail.html", movie=movie)  
+
+@app.route("/preferredpayment", methods=['GET', 'POST'])
+def preferredpayment():
+    payments = ['1', '2', '3', '4']
+    if request.method == 'GET':
+        return render_template("preferredpayment.html", payments=payments)
+    if request.method == 'POST':
+        try:
+            payment = str(request.form['payment'])
+            #payments = payments.remove(payment)
+        except:
+            pass
+        return render_template("preferredpayment.html", payments=payments)
+
+@app.route("/preferredtheater", methods=['GET', 'POST'])
+def preferredtheaters():
+    if request.method == 'POST':
+        try:
+            movie = request.form['movie']
+            search = request.form['Search']
+            #do stuff with keyword
+            results = search
+        except:
+            movie = "Error"
+            results = "ERROR"
+        return render_template("preferredtheater.html")
 
 if __name__ == '__main__':
     app.run()

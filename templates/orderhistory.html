@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="form">
+
+    <div class="top-row">
+        <h1>Order History</h1>
+    </div>
+
+    <hr>
+
+    <form method="POST" action="/orderhistory">
+        <h3>Order ID:
+            <div class="field-wrap">
+                <input type="textarea" name="Search"/>
+                <input type="submit" value="Search"> 
+            </div>
+        </h3>
+    </form>
+    
+    <form method="POST" action="/order">
+        <table>
+            <tbody>
+                {% for i in orders %}
+                <tr>
+                    <td><input type="radio" name="order" value="{{i}}">{{i}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="View Detail"> 
+    </form>
+
+</div> <!-- /form -->
+{% endblock %}
