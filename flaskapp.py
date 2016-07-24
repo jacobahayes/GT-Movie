@@ -57,9 +57,22 @@ def movie():
         return render_template("movie.html", movie=movie)
     if request.method == 'POST':
         try:
-            movie = request.form['movie']
-        except:
-            movie = "Error"
+            movie = str(request.form['movie'])
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL movie_GetMovieData ('"+movie+"');")
+            result = cursor.fetchone()
+            release = str(result[0])
+            MPAArating = str(result[1])
+            length = str(result[2])
+            genre = str(result[3])
+            avgRating = str(result[4])
+            print release
+            print MPAArating
+            print length
+            print genre
+            print avgRating
+        except Exception as e:
+            return(str(e))
         return render_template("movie.html", movie=movie)
 
 @app.route("/overview", methods=['GET', 'POST'])
