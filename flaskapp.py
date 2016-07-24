@@ -9,7 +9,7 @@ app.config.from_pyfile('flaskapp.cfg')
 app.config['MYSQL_USER'] = 'admingu2v3JA'
 app.config['MYSQL_PASSWORD'] = '4eaeGBP2ZlDh'
 app.config['MYSQL_DB'] = 'gtmovie'
-app.config['MYSQL_HOST'] = '127.6.155.2'
+app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_PORT'] = 3306
 mysql = MySQL()
 mysql.init_app(app)
@@ -28,7 +28,12 @@ def index():
             for record in cursor:
                 result += str(record)
             if int(result[1]) == 1:
-                return render_template("nowplaying.html")
+                cursor.callproc('nowplaying_GetNowPlayingTitles')
+                record = cursor.fetchall()
+                result = []
+                for r in record:
+                    result.append(str(r[0]))
+                return render_template('nowplaying.html', movies=result)
             else:
                 return render_template("index.html")
         except Exception as e:
@@ -40,16 +45,7 @@ def serveStaticResource(resource):
 
 @app.route("/nowplaying", methods=['GET', 'POST'])
 def nowplaying():
-    try:
-        cursor = mysql.connection.cursor()
-        cursor.callproc('nowplaying_GetNowPlayingTitles') 
-        record = cursor.fetchall()
-        result = []
-        for r in record:
-            result.append[str(r[0])]
-        return render_template("nowplaying.html", movies=results)
-    except:
-        return render_template("nowplaying.html", movies=["Captain America", "SpongeBob", "Cool", "Big Fish"])
+    return render_template("nowplaying.html")
 
 @app.route("/me")
 def me():
