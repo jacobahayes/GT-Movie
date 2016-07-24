@@ -10,7 +10,7 @@ app.config['MYSQL_USER'] = 'admingu2v3JA'
 app.config['MYSQL_PASSWORD'] = '4eaeGBP2ZlDh'
 app.config['MYSQL_DB'] = 'gtmovie'
 app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_PORT'] = 3307
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -27,13 +27,9 @@ def index():
             result = ''
             for record in cursor:
                 result += str(record)
+            cursor.close()
             if int(result[1]) == 1:
-                cursor.callproc('nowplaying_GetNowPlayingTitles')
-                record = cursor.fetchall()
-                result = []
-                for r in record:
-                    result.append(str(r[0]))
-                return render_template('nowplaying.html', movies=result)
+                return redirect(url_for("nowplaying"))
             else:
                 return render_template("index.html")
         except Exception as e:
@@ -45,7 +41,14 @@ def serveStaticResource(resource):
 
 @app.route("/nowplaying", methods=['GET', 'POST'])
 def nowplaying():
-    return render_template("nowplaying.html")
+    cursor = mysql.connection.cursor()
+    cursor.callproc('nowplaying_GetNowPlayingTitles')
+    record = cursor.fetchall()
+    result = []
+    for r in record:
+        result.append(str(r[0]))
+    cursor.close()
+    return render_template('nowplaying.html', movies=result)
 
 @app.route("/me")
 def me():
@@ -61,6 +64,7 @@ def movie():
             cursor = mysql.connection.cursor()
             cursor.execute("CALL movie_GetMovieData ('"+movie+"');")
             result = cursor.fetchone()
+            cursor.close()
             release = str(result[0])
             MPAArating = str(result[1])
             length = str(result[2])
