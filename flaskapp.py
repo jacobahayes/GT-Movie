@@ -77,16 +77,31 @@ def movie():
 
 @app.route("/overview", methods=['GET', 'POST'])
 def overview():
-    try:
-        movie = request.form['movie']
-        syn = "Movie is cool"
-        cast = "Some stuff about actors"
-    except:
-        movie = "Error"
-        syn = "Movie is cool"
-        cast = "Some stuff about actors"
-    data = {'syn': syn, 'cast': cast}
-    return render_template("overview.html", data=data, movie=movie)
+    if request.method == 'POST':
+        try:
+            movie = str(request.form['movie'])
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL overview_GetOVerviewData ('"+movie+"');")
+            result = cursor.fetchone()
+            syn = str(result[1])
+            actor1 = str(result[2])
+            role1 = str(result[3])
+            actor2 = str(result[4])
+            role2 = str(result[5])
+            actor3 = str(result[6])
+            role3 = str(result[7])
+            actor4 = str(result[8])
+            role4 = str(result[9])
+            actor5 = str(result[10])
+            role5 = str(result[11])
+            cast = "Some stuff about actors"
+        except Exception as e:
+            print str(e)
+            movie = "Error"
+            syn = "Movie is cool"
+            cast = "Some stuff about actors"
+        data = {'syn': syn, 'cast': cast}
+        return render_template("overview.html", data=data, movie=movie)
 
 @app.route("/review", methods=['GET', 'POST'])
 def review():
