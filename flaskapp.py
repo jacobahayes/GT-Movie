@@ -478,16 +478,33 @@ def choosefunctionality():
 
 @app.route("/revenuereport", methods=['GET', 'POST'])
 def revenuereport():
+    report = []
     if request.method == 'POST':
-        usern = str(request.form['usern'])
-        return render_template("revenuereport.html", usern=usern)
-
+        try:
+            usern = str(request.form['usern'])
+            cursor = mysql.connection.cursor()
+            cursor.callproc('Revrpt')
+            results = cursor.fetchall()
+            for r in results:
+                report.append({'Month':r[0],'Stacks':r[1]})
+            return render_template("revenuereport.html", usern=usern)
+        except Exception as e:
+            return str(e)
 
 @app.route("/popularmoviereport", methods=['GET', 'POST'])
 def popularmoviereport():
+    report = []
     if request.method == 'POST':
-        usern = str(request.form['usern'])
-        return render_template("popularmoviereport.html", usern=usern)
+        try:
+            usern = str(request.form['usern'])
+            cursor = mysql.connection.cursor()
+            cursor.callproc('PopularMovieReport')
+            results = cursor.fetchall()
+            for r in results:
+                report.append({'Month':r[0],'Movie':r[1],'Orders':r[2]})
+            return render_template("popularmoviereport.html", usern=usern)
+        except Exception as e:
+            return str(e)
 
 if __name__ == '__main__':
     app.run()
