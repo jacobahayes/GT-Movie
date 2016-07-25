@@ -28,7 +28,9 @@
                 {% else %}
                 {% for i in orders %}
                 <tr>
-                    <td><input type="radio" name="order" value="{{i.orderID}}">{{i}}</td>
+                    <td><input type="radio" name="order" value="{{i.orderID}}">
+                        Order ID:{{i.orderID}}, Movie:{{i.movie}}, Status:{{i.status}}, Cost:{{i.cost}}
+                    </td>
                 </tr>
                 {% endfor %}
                 {% endif %}

@@ -10,8 +10,15 @@
     <hr>
     
     <h3>Order</h3>
-    <p>{{order}}</p>
+    <p>Movie Title: {{order.Movie}}</p>
+    <p>MPAA Rating: {{order.MPAARating}}</p>
+    <p>Length: {{order.length}}</p>
+    <p>Showtime: {{order.showtime}}</p>
+    <p>Theater: {{order.Theater}}</p>
+    <p>Address: {{order.Address}}</p>
+    <p>Cost: {{order.cost}}</p>
 
+    <p>Order ID: {{orderID}}</p>
     <h3>
         <form action="cancelorder" method="post">
             <input type="hidden" name="orderID" value="{{orderID}}"/>                                        

@@ -9,10 +9,10 @@ app.config.from_pyfile('flaskapp.cfg')
 app.config['MYSQL_USER'] = 'admingu2v3JA'
 app.config['MYSQL_PASSWORD'] = '4eaeGBP2ZlDh'
 app.config['MYSQL_DB'] = 'gtmovie'
-app.config['MYSQL_HOST'] = '127.6.155.2'
-app.config['MYSQL_PORT'] = 3306
-#app.config['MYSQL_HOST'] = '127.0.0.1'
+#app.config['MYSQL_HOST'] = '127.6.155.2'
 #app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_PORT'] = 3307
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -400,12 +400,12 @@ def orderdetail():
         usern = str(request.form['usern'])
         orderID = request.form['order']
         cursor = mysql.connection.cursor()
-        cursor.execute("CALL orderDetail_GetOrderInformation ('"+orderID+"', '"+usern+"');")
+        cursor.execute("CALL orderDetail_GetOrderDetails('"+orderID+"', '"+usern+"');")
         orderRes = cursor.fetchall()[0]
         print orderRes
-        order = {'OrderID': str(orderRes[0]), 'date':str(orderRes[1]), 'time':str(orderRes[2]),
-                'status':str(orderRes[7]),'cost':str(orderRes[8]),'movie':str(orderRes[9]),
-                'card':str(orderRes[12]), 'theater':str(orderRes[11])}
+        order = {'Movie': str(orderRes[0]), 'MPAARating':str(orderRes[1]), 'length':str(orderRes[2]),
+                'showtime':str(orderRes[3])+" at "+str(orderRes[4]), 'Theater':str(orderRes[5]),
+                'OrderID':str(orderRes[6]), 'cost':str(orderRes[7]), 'Address':str(orderRes[8])}
         print order
     except Exception as e:
         return(str(e)) 
