@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'gtmovie'
 #app.config['MYSQL_HOST'] = '127.6.155.2'
 #app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_PORT'] = 3307
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -439,14 +439,19 @@ def preferredpayment():
             result = cursor.fetchall()
             print result
             for r in result:
-                payments.append({'carNum':r[0],'Name':r[3],'expDate':r[2]})
+                payments.append({'cardNum':r[0],'Name':r[3],'expDate':r[2]})
             try:
+                print('a') 
                 payment = str(request.form['payment'])
-                #payments = payments.remove(payment)
-            except:
-                pass
+                print('b') 
+                cursor.execute("CALL paymentInfo_deleteCard ('"+payment+"')")
+                print('c') 
+            except Exception as e:
+                print(e) 
         except Exception as e:
             return str(e) 
+        cursor.close()
+        mysql.connection.commit()
         return render_template("preferredpayment.html", usern=usern, payments=payments)
 
 @app.route("/preferredtheater", methods=['GET', 'POST'])
@@ -459,16 +464,19 @@ def preferredtheaters():
             cursor.execute("CALL preferredTheaters_GetPreferredTheaters ('"+usern+"')")
             result = cursor.fetchall()
             for r in result:
-                theaters.append({'Name':str(r[0]).upper(),'Address':str(r[1])+', '+str(r[2])+', '+str(r[3])+' '+str(r[4])})
+                theaters.append({'Name':str(r[0]).upper(),
+                    'Address':str(r[1])+', '+str(r[2])+', '+str(r[3])+' '+str(r[4]),
+                    'theaterID':str(r[5])})
             try:
-                search = request.form['Search']
-                #do stuff with keyword
-                results = search
-            except:
-                results = "ERROR"
+                theater = request.form['theater']
+                cursor.execute("CALL preferredTheater_DeletePreferredTheater ('"+theater+"', '"+usern+"')")
+            except Exception as e:
+                print(e)
         except Exception as e:
             return(str(e)) 
-        return render_template("preferredtheater.html", usern=usern)
+        cursor.close()
+        mysql.connection.commit()
+        return render_template("preferredtheater.html", theaters=theaters, usern=usern)
 
 @app.route("/choosefunctionality", methods=['GET', 'POST'])
 def choosefunctionality():

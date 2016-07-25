@@ -9,12 +9,17 @@
 
     <hr>
     
+
+    {{theaters}}
     <form method="POST" action="/preferredpayment">
+        <input type="hidden" name="usern" value="{{usern}}"/>
         <table>
             <tbody>
                 {% for i in payments %}
                 <tr>
-                    <td><input type="radio" name="payment" value="{{i}}">{{i}}</td>
+                    <td><input type="radio" name="payment" value="{{i.cardNum}}">
+                        Card Number: {{i.cardNum}}, Exp. Date: {{i.expDate}}, Name: {{i.Name}}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

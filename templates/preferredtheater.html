@@ -7,14 +7,20 @@
     </div>
 
     <hr>
-    
+
     <form method="POST" action="/preferredtheater">
         <input type="hidden" name="usern" value="{{usern}}"/>
-        <input type="radio" name="theater" value="A" checked>Theater A<br>
-        <input type="radio" name="theater" value="B">Theater B<br>
-        <input type="radio" name="theater" value="C">Theater C<br>
-        <input type="radio" name="theater" value="D">Theater D<br>
-
+        <table>
+            <tbody>
+                {% for i in theaters %}
+                <tr>
+                    <td><input type="radio" name="theater" value="{{i.theaterID}}">
+                        Name: {{i.Name}}, Address: {{i.Address}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <input type="submit" value="Delete">
     </form>
 
