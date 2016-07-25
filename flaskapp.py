@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'gtmovie'
 app.config['MYSQL_HOST'] = '127.6.155.2'
 app.config['MYSQL_PORT'] = 3306
 #app.config['MYSQL_HOST'] = '127.0.0.1'
-#app.config['MYSQL_PORT'] = 3307
+#app.config['MYSQL_PORT'] = 3306
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -402,9 +402,11 @@ def orderdetail():
         cursor = mysql.connection.cursor()
         cursor.execute("CALL orderDetail_GetOrderInformation ('"+orderID+"', '"+usern+"');")
         orderRes = cursor.fetchall()[0]
+        print orderRes
         order = {'OrderID': str(orderRes[0]), 'date':str(orderRes[1]), 'time':str(orderRes[2]),
                 'status':str(orderRes[7]),'cost':str(orderRes[8]),'movie':str(orderRes[9]),
-                'card':str(orderRes[10]), 'theater':str(orderRes[11])}
+                'card':str(orderRes[12]), 'theater':str(orderRes[11])}
+        print order
     except Exception as e:
         return(str(e)) 
     return render_template("orderdetail.html", usern=usern, orderID=orderID, order=order)  
