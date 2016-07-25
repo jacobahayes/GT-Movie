@@ -9,33 +9,63 @@ app.config.from_pyfile('flaskapp.cfg')
 app.config['MYSQL_USER'] = 'admingu2v3JA'
 app.config['MYSQL_PASSWORD'] = '4eaeGBP2ZlDh'
 app.config['MYSQL_DB'] = 'gtmovie'
-app.config['MYSQL_HOST'] = '127.6.155.2'
+#app.config['MYSQL_HOST'] = '127.6.155.2'
+#app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_PORT'] = 3306
-#app.config['MYSQL_HOST'] = '127.0.0.1'
-#app.config['MYSQL_PORT'] = 3307
 mysql = MySQL()
 mysql.init_app(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    isMgr = 0
     if request.method == 'GET':
         return render_template('index.html')
     if request.method == 'POST':
         try:
             usern = request.form['usern']
             passw = request.form['password']
+            fName = request.form['fName']
+            lName = request.form['lName']
+            email = request.form['email']
             cursor = mysql.connection.cursor()
-            cursor.execute('SELECT gtmovie.login_AuthenticateUser(%s,%s) AS login_AuthenticateUser',(usern,passw)) 
-            result = ''
-            for record in cursor:
-                result += str(record)
-            cursor.close()
-            if int(result[1]) == 1:
-                return redirect(url_for("nowplaying", usern=usern), code=307)
-            else:
+            cursor.execute("SELECT register_CheckEmailAvailable ('"+email+"');")
+            result = cursor.fetchone()[0]
+            if result == 0:
                 return render_template("index.html")
-        except Exception as e:
-            return(str(e))
+            cursor.execute("SELECT register_CheckUsernameAvailable ('"+usern+"');")
+            result = cursor.fetchone()[0]
+            if result == 0:
+                return render_template("index.html")
+            cursor.execute("SELECT register_VerifyManagerPassword ('"+passw+"');")
+            result = cursor.fetchone()[0]
+            if result > 0:
+                isMgr = 1
+            else:
+                isMgr = 0
+            cursor.execute("CALL register_AddUser ('"+usern+"','"+passw+"','"+email+"','"+str(isMgr)+"');")
+            mysql.connection.commit()
+            cursor.close()
+            return redirect(url_for("nowplaying", usern=usern), code=307)
+        except: 
+            try:
+                usern = request.form['usern']
+                passw = request.form['password']
+                cursor = mysql.connection.cursor()
+                cursor.execute('SELECT gtmovie.login_AuthenticateUser(%s,%s) AS login_AuthenticateUser',(usern,passw)) 
+                result = ''
+                for record in cursor:
+                    result += str(record)
+                cursor.close()
+                if int(result[1]) == 1:
+                    if passw = 'pass':
+                        # redirect to manager functionality
+                    else:
+                        return redirect(url_for("nowplaying", usern=usern), code=307)
+                else:
+                    return render_template("index.html")
+            except Exception as e:
+                return(str(e))
 
 @app.route('/<path:resource>')
 def serveStaticResource(resource):
