@@ -231,11 +231,14 @@ def selecttime():
                 times.append(r[0])
             try:
                 saveTheater = request.form['saveTheater']
-                if (saveTheater == 'check'):
-                    #SQL to save theater
-                    print("Save theater")
-            except:
-                pass
+                cursor = mysql.connection.cursor()
+                cursor.execute("CALL chooseTheater_SaveTheater ('"+theater+"','"+usern+"');")
+                cursor.fetchall()
+                cursor.close()
+                mysql.connection.commit()
+                print("Saved theater")
+            except Exception as e:
+                print(str(e))
         except Exception as e:
             return str(e)
         return render_template("selecttime.html", usern=usern, movie=movie, times=times, theater=theater)
