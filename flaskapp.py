@@ -397,6 +397,7 @@ def orderhistory():
 @app.route("/orderdetail", methods=['GET', 'POST'])                                                        
 def orderdetail():                                                                                     
     try:
+        usern = str(request.form['usern'])
         orderID = request.form['order']
         cursor = mysql.connection.cursor()
         cursor.execute("CALL orderDetail_GetOrderInformation ('"+orderID+"', '"+usern+"');")
@@ -404,7 +405,6 @@ def orderdetail():
         order = {'OrderID': str(orderRes[0]), 'date':str(orderRes[1]), 'time':str(orderRes[2]),
                 'status':str(orderRes[7]),'cost':str(orderRes[8]),'movie':str(orderRes[9]),
                 'card':str(orderRes[10]), 'theater':str(orderRes[11])}
-        usern = str(request.form['usern'])
     except Exception as e:
         return(str(e)) 
     return render_template("orderdetail.html", usern=usern, orderID=orderID, order=order)  
