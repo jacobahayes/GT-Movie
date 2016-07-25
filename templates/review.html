@@ -9,18 +9,21 @@
 
     <hr>
 
+    {% if hasSeen %}
     <form action="givereview" method="post">
         <input type="hidden" name="usern" value="{{usern}}"/>
         <button name="movie" value="{{movie}}">Give Review</button>
     </form>
-
     <hr>
+    {% endif %}
+
     
     <table>
         <tbody>
             {% for r in reviews %}
             <tr>
-                <td> {{r}} </td>
+                <td> Title: {{r.revs}}, Rating: {{r.ratings}} </td>
+                <td> Comment: {{r.comments}} </td>
             </tr>
             {% endfor %}
         </tbody>

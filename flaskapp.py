@@ -122,7 +122,6 @@ def overview():
 def review():
     if request.method == 'POST':
         reviews = []
-        comments = []
         hasSeen = False
         try:
             usern = str(request.form['usern'])
@@ -139,11 +138,10 @@ def review():
             cursor.execute("CALL viewReviews_GetViewReviewsData ('"+movie+"');")
             result = cursor.fetchall()
             for r in result:
-                reviews.append(r[0])
-                comments.append(r[2])
+                reviews.append({'revs':r[0], 'ratings':r[1], 'comments':r[2]})
         except:
             return "Error"
-        return render_template("review.html", usern=usern, avg=avg, reviews=reviews, movie=movie)
+        return render_template("review.html", hasSeen=hasSeen, usern=usern, avg=avg, reviews=reviews, movie=movie)
 
 @app.route("/givereview", methods=['GET', 'POST'])
 def give_review():
