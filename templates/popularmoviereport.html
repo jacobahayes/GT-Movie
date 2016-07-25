@@ -8,6 +8,22 @@
 
     <hr>
 
+        <table>
+            <tbody>
+                <tr>
+                    <td>Month</td>
+                    <td>Movie</td>
+                    <td>Orders</td>
+                </tr>
+                {% for r in report %}
+                <tr>
+                    <td>{{r.Month}}</td>
+                    <td>{{r.Movie}}</td>
+                    <td>{{r.Orders}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
     <h3>
         <form action="choosefunctionality" method="post">
