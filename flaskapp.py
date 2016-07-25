@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'gtmovie'
 #app.config['MYSQL_HOST'] = '127.6.155.2'
 #app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 3307
+app.config['MYSQL_PORT'] = 3306
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -45,7 +45,6 @@ def serveStaticResource(resource):
 def nowplaying():
     try:
         usern = request.form['usern']
-        print str(usern)
     except Exception as e:
         return(str(e))
     cursor = mysql.connection.cursor()
@@ -73,7 +72,6 @@ def movie():
         try:
             usern = request.form['usern']
             movie = str(request.form['movie'])
-            print(str(usern))
             cursor = mysql.connection.cursor()
             cursor.execute("CALL movie_GetMovieData ('"+movie+"');")
             result = cursor.fetchone()
@@ -125,15 +123,21 @@ def review():
     if request.method == 'POST':
         reviews = []
         comments = []
+        hasSeen = False
         try:
             usern = str(request.form['usern'])
             movie = request.form["movie"]
             cursor = mysql.connection.cursor()
+            cursor.execute("SELECT giveReviews_UserHasSeenMovie ('"+usern+"','"+movie+"');")
+            result = cursor.fetchone()[0]
+            if result > 0 :
+                hasSeen = True
+            else: 
+                hasSeen = False
             cursor.execute("SELECT util_GetAvgReviewRating ('"+movie+"');")
             avg = cursor.fetchone()[0]
             cursor.execute("CALL viewReviews_GetViewReviewsData ('"+movie+"');")
             result = cursor.fetchall()
-            print result
             for r in result:
                 reviews.append(r[0])
                 comments.append(r[2])
@@ -147,24 +151,35 @@ def give_review():
         try:
             usern = str(request.form['usern'])
             movie = request.form['movie']
-        except:
-            movie = "Error"
-        return render_template("givereview.html", movie=movie)
+        except Exception as e:
+            return str(e)
+        return render_template("givereview.html", usern=usern,  movie=movie)
 
 @app.route("/procreview", methods=['POST'])
 def proc_review():
+    if request.method == 'POST':
         try:
             movie = request.form['movie']
             usern = str(request.form['usern'])
+            rTitle = request.form['rtitle']
             rating = request.form['rating']
+            comment = request.form['comment']
+            print movie
+            print usern
+            print rTitle
+            print rating
+            print comment
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL givereviews_SubmitReview ('"+movie+"','"+rTitle+"','"+comment+"','"+rating+"','"+usern+"');")
+            mysql.connection.commit()
+            cursor.close()
             try:
                 comment = request.form['comment']
             except:
                 comment = "" 
             return redirect(url_for('movie', usern=usern, movie=movie), code=307)
-        except:
-            return "Sorry failed"
-
+        except Exception as e:
+            return str(e)
 
 @app.route("/choosetheater", methods=['GET', 'POST'])
 def choose_theater():
@@ -207,7 +222,6 @@ def selecttime():
     if request.method == 'POST':
         times = []
         try:
-            theaterID ='1' # request.form['theater']
             usern = str(request.form['usern'])
             theater = request.form['theater']
             movie = request.form['movie']
