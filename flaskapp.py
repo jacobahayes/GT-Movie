@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'gtmovie'
 app.config['MYSQL_HOST'] = '127.6.155.2'
 app.config['MYSQL_PORT'] = 3306
 #app.config['MYSQL_HOST'] = '127.0.0.1'
-#app.config['MYSQL_PORT'] = 3306
+#app.config['MYSQL_PORT'] = 3307
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -212,7 +212,7 @@ def theaterresults():
             cursor.execute("CALL chooseTheater_searchTheater ('"+search+"','"+movie+"');")
             sResults = cursor.fetchall()
             for t in sResults:
-                results.append(str(t[0])+': '+str(t[1])+' '+str(t[2])+', '+str(t[3]))
+                results.append({'name':str(t[0])+': '+str(t[1])+' '+str(t[2])+', '+str(t[3]), 'id':t[4]})
         except Exception as e:
             return str(e)
         return render_template("theaterresults.html", usern=usern, movie=movie, results=results)
