@@ -3,26 +3,45 @@
 <div class="form">
 
     <div class="top-row">
-        <h1> {{movie}} </h1>
-        <h3>{{theater}} @ {{time}}</h3>
+        <h1> {{orderInfo.movie}} </h1>
+        <h3>{{orderInfo.theater}} @ {{orderInfo.time}}</h3>
     </div>
 
     <hr>
 
     <h2>Payment Info:</h2>
 
-    <form method="POST" action="order">
+    <form method="POST" action="/order">
+        <input type="hidden" name="theater" value="{{orderInfo.theater}}">
+        <input type="hidden" name="usern" value="{{orderInfo.usern}}">
+        <input type="hidden" name="movie" value="{{orderInfo.movie}}">
+        <input type="hidden" name="adult" value="{{orderInfo.adult}}">
+        <input type="hidden" name="sen" value="{{orderInfo.sen}}">
+        <input type="hidden" name="children" value="{{orderInfo.children}}">
+        <input type="hidden" name="time" value="{{orderInfo.time}}">
         <h3>Use a saved card
-            <select name="savedcard">
-                <option value="AMex">AMex</option>
-                <option value="Visa">Visa</option>
-            </select>
+            {% if cards|length > 0 %}
+                <select name="savedcard">
+                {% for c in cards %}
+                    <option value="{{c.num}}">{{c.num}}</option>
+                {% endfor %}
+                </select>
             <input type="submit" value="Choose"> 
+            {% else %}
+                No saved Saved Cards
+            {% endif %}
         </h3>
     </form>
 
     <h2>Use a new card:</h2>
     <form method="POST" action="/order">
+        <input type="hidden" name="theater" value="{{orderInfo.theater}}">
+        <input type="hidden" name="usern" value="{{orderInfo.usern}}">
+        <input type="hidden" name="movie" value="{{orderInfo.movie}}">
+        <input type="hidden" name="adult" value="{{orderInfo.adult}}">
+        <input type="hidden" name="sen" value="{{orderInfo.sen}}">
+        <input type="hidden" name="children" value="{{orderInfo.children}}">
+        <input type="hidden" name="time" value="{{orderInfo.time}}">
         <h3>Name on Card:
             <div class="field-wrap">
                 <input type="textarea" name="name"/>
@@ -39,9 +58,7 @@
             </div>
         </h3>
         <h3>Expiration Date:
-            <div class="field-wrap">
-                <input type="textarea" name="expdate"/>
-            </div>
+            <input type="date" name="expdate"/>
         </h3>
 
         <input type="checkbox" name="saveCard" value="check">Save Card<br>

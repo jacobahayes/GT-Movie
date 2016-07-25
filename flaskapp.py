@@ -258,6 +258,7 @@ def buyticket():
 
 @app.route("/paymentinfo", methods=['GET', 'POST'])                                                        
 def paymentinfo():                                                                                     
+    cards = []
     try:
         usern = str(request.form['usern'])
         time = request.form['time']
@@ -266,17 +267,73 @@ def paymentinfo():
         sen = request.form['Senior']
         adult = request.form['Adult']
         children = request.form['Children']
-        return render_template("paymentinfo.html", usern=usern, movie=movie, theater=theater, time=time)  
-    except:
-        return render_template("paymentinfo.html")  
+        orderInfo = {'usern':usern, 
+                'time':time,
+                'movie':movie, 
+                'theater': theater,
+                'sen': sen,
+                'adult':adult,
+                'children':children}
+        
+        cursor = mysql.connection.cursor()
+        cursor.execute("CALL buyTicket_GetSavedCards ('"+usern+"');")
+        result = cursor.fetchall()
+        print result
+        for r in result:
+            cards.append({'num':r[0], 'cvv':r[1], 'expdate':r[2], 'name':r[3]})
+
+        return render_template("paymentinfo.html", orderInfo=orderInfo, cards=cards)  
+    except Exception as e:
+        return(str(e))
 
 @app.route("/order", methods=['GET', 'POST'])                                                        
 def order():                                                                                     
     try:
-        usern = str(request.form['usern'])
-    except:
-        return "Error"
-    return render_template("order.html", orderNo='1234')  
+        theater = request.form['theater']
+        usern = request.form['usern']
+        movie = request.form['movie']
+        adult = request.form['adult']
+        sen = request.form['sen']
+        child = request.form['children']
+        time = request.form['time']
+        cursor = mysql.connection.cursor()
+        try:
+            name = request.form['name']
+            num = request.form['num']
+            cvv = request.form['cvv']
+            expdate = request.form['expdate']
+
+
+            try:
+                save = request.form['saveCard']
+                stm = "CALL buyTicket_SubmitCard ('-1', '"+num+"', '"+expdate+"', '"+name+"', '"
+                stm += cvv+"', '"+usern+"', '1');"
+                cursor.execute(stm)
+                print(stm)
+            except:
+                stm = "CALL buyTicket_SubmitCard ('-1', '"+num+"', '"+expdate+"', '"+name+"', '"
+                stm += cvv+"', '"+usern+"', '0');"
+                cursor.execute(stm)
+                print(stm)
+
+            cursor.fetchall()
+        except Exception as e:
+            print(e)
+            try:
+                num = request.form['savedcard']
+            except Exception as e:
+                print(e)
+    except Exception as e:
+        print(e)
+    statement = "CALL buyTicket_SubmitPurchase ('"+theater+"', '"+usern+"', '"+movie
+    statement += "', '" +adult+"', '"+sen+"', '"+child+"', '"+time
+    statement += "', '"+num+"');"
+    print(statement)
+    cursor.execute(statement)
+    orderID = cursor.fetchall()[0][0]
+    cursor.close()
+    mysql.connection.commit()
+    return render_template("order.html", usern=usern, orderNo=orderID)  
 
 @app.route("/orderhistory", methods=['GET', 'POST'])                                                        
 def orderhistory():                                                                                     
