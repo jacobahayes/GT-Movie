@@ -59,8 +59,7 @@ def index():
                 cursor.close()
                 if int(result[1]) == 1:
                     if passw == 'pass':
-                        pass
-                        # redirect to manager functionality
+                        return redirect(url_for("choosefunctionality", usern=usern), code=307)
                     else:
                         return redirect(url_for("nowplaying", usern=usern), code=307)
                 else:
@@ -470,6 +469,25 @@ def preferredtheaters():
         except Exception as e:
             return(str(e)) 
         return render_template("preferredtheater.html", usern=usern)
+
+@app.route("/choosefunctionality", methods=['GET', 'POST'])
+def choosefunctionality():
+    if request.method == 'POST':
+        usern = str(request.form['usern'])
+        return render_template("choosefunctionality.html", usern=usern)
+
+@app.route("/revenuereport", methods=['GET', 'POST'])
+def revenuereport():
+    if request.method == 'POST':
+        usern = str(request.form['usern'])
+        return render_template("revenuereport.html", usern=usern)
+
+
+@app.route("/popularmoviereport", methods=['GET', 'POST'])
+def popularmoviereport():
+    if request.method == 'POST':
+        usern = str(request.form['usern'])
+        return render_template("popularmoviereport.html", usern=usern)
 
 if __name__ == '__main__':
     app.run()

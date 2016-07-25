@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form">
+
+    <div class="top-row">
+        <h1>Choose Functionality</h1>
+    </div>
+
+    <hr>
+
+    <h2>
+        <form action="revenuereport" method="post">
+            <button name="usern" value="{{usern}}">View Revenue Report</button>
+        </form>
+    </h2>
+    <h2>
+        <form action="popularmoviereport" method="post">
+            <button name="usern" value="{{usern}}">View Popular Movie Report</button>
+        </form>
+    </h2>
+
+    <h3>
+        <form action="/" method="get">
+            <button name="usern" value="{{usern}}">Log Out</button>
+        </form>
+    </h3>
+
+</div> <!-- /form -->
+{% endblock %}
