@@ -280,12 +280,18 @@ def order():
 
 @app.route("/orderhistory", methods=['GET', 'POST'])                                                        
 def orderhistory():                                                                                     
-    orders = ['1', '2', '3', '4']
-    try:
-        usern = str(request.form['usern'])
-    except Exception as e:
-        return(str(e)) 
-    return render_template("orderhistory.html", usern=usern, orders=orders)  
+    if request.method == 'POST':
+        orders = []
+        try:
+            usern = str(request.form['usern'])
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL orderHistory_GetOrderHIstory ('"+usern+"');")
+            result = cursor.fetchall()
+            for r in result:
+                orders.append({'orderID':r[0],'movie':r[1],'status':r[2],'cost':r[3]})
+        except Exception as e:
+            return(str(e)) 
+        return render_template("orderhistory.html", usern=usern, orders=orders)  
 
 @app.route("/orderdetail", methods=['GET', 'POST'])                                                        
 def orderdetail():                                                                                     
@@ -298,24 +304,36 @@ def orderdetail():
 
 @app.route("/preferredpayment", methods=['GET', 'POST'])
 def preferredpayment():
-    payments = ['1', '2', '3', '4']
+    payments = []
     if request.method == 'POST':
         try:
             usern = str(request.form['usern'])
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL buyTicket_GetSavedCards ('"+usern+"')")
+            result = cursor.fetchall()
+            print result
+            for r in result:
+                payments.append({'carNum':r[0],'Name':r[3],'expDate':r[2]})
             try:
                 payment = str(request.form['payment'])
                 #payments = payments.remove(payment)
             except:
                 pass
-        except:
-            return "Error"
+        except Exception as e:
+            return str(e) 
         return render_template("preferredpayment.html", usern=usern, payments=payments)
 
 @app.route("/preferredtheater", methods=['GET', 'POST'])
 def preferredtheaters():
     if request.method == 'POST':
+        theaters = []
         try:
             usern = str(request.form['usern'])
+            cursor = mysql.connection.cursor()
+            cursor.execute("CALL preferredTheaters_GetPreferredTheaters ('"+usern+"')")
+            result = cursor.fetchall()
+            for r in result:
+                theaters.append({'Name':str(r[0]).upper(),'Address':str(r[1])+', '+str(r[2])+', '+str(r[3])+' '+str(r[4])})
             try:
                 search = request.form['Search']
                 #do stuff with keyword
