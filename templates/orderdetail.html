@@ -9,15 +9,19 @@
 
     <hr>
     
-    <h3>Synopsis</h3>
-    <p>{{data.syn}}</p>
-
-    <h3>Cast</h3>
-    <p>{{data.cast}}</p>
+    <h3>Order</h3>
+    <p>{{order}}</p>
 
     <h3>
-        <form action="movie" method="post">
-            <button name="movie" value="{{movie}}">Back</button>
+        <form action="cancelorder" method="post">
+            <input type="hidden" name="orderID" value="{{orderID}}"/>                                        
+            <input type="hidden" name="usern" value="{{usern}}"/>                                        
+            <button name="cancel" value="{{movie}}">Cancel Order</button>
+        </form>
+    </h3>
+    <h3>
+        <form action="orderhistory" method="post">
+            <button name="usern" value="{{usern}}">Back</button>
         </form>
     </h3>
 

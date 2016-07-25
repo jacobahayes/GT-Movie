@@ -58,7 +58,8 @@ def index():
                     result += str(record)
                 cursor.close()
                 if int(result[1]) == 1:
-                    if passw = 'pass':
+                    if passw == 'pass':
+                        pass
                         # redirect to manager functionality
                     else:
                         return redirect(url_for("nowplaying", usern=usern), code=307)
@@ -377,6 +378,16 @@ def orderhistory():
             result = cursor.fetchall()
             for r in result:
                 orders.append({'orderID':r[0],'movie':r[1],'status':r[2],'cost':r[3]})
+            try:
+                search = request.form['Search']
+                cursor = mysql.connection.cursor()
+                cursor.execute("CALL orderDetail_GetOrderInformation ('"+search+"');")
+                r = cursor.fetchall()[0]
+                orders = [{'orderID':r[0],'movie':r[9],'status':r[7],'cost':r[8]}]
+                cursor.close()
+            except Exception as e:
+                print(e)
+                cursor.close()
         except Exception as e:
             return(str(e)) 
         return render_template("orderhistory.html", usern=usern, orders=orders)  
@@ -384,11 +395,39 @@ def orderhistory():
 @app.route("/orderdetail", methods=['GET', 'POST'])                                                        
 def orderdetail():                                                                                     
     try:
-        order = request.form['order']
+        orderID = request.form['order']
+        cursor = mysql.connection.cursor()
+        cursor.execute("CALL orderDetail_GetOrderInformation ('"+orderID+"');")
+        orderRes = cursor.fetchall()[0]
+        order = {'OrderID': str(orderRes[0]), 'date':str(orderRes[1]), 'time':str(orderRes[2]),
+                'status':str(orderRes[7]),'cost':str(orderRes[8]),'movie':str(orderRes[9]),
+                'card':str(orderRes[10]), 'theater':str(orderRes[11])}
         usern = str(request.form['usern'])
     except Exception as e:
         return(str(e)) 
-    return render_template("orderdetail.html", usern=usern, order=order)  
+    return render_template("orderdetail.html", usern=usern, orderID=orderID, order=order)  
+
+@app.route("/cancelorder", methods=['POST'])                                                        
+def cancelorder():                                                                                     
+    try:
+        usern = str(request.form['usern'])
+        cancel = request.form['cancel']
+        orderID = request.form['orderID']
+        cursor = mysql.connection.cursor()
+        print(orderID)
+        cursor.execute("SELECT orderDetail_CanOrderBeCancelled ("+orderID+");")
+        check = cursor.fetchall()[0][0]
+        if check == 1:
+            cursor.execute("CALL orderDetail_CancelOrder("+orderID+");")
+            cursor.close()
+            mysql.connection.commit()
+        else:
+            cursor.close()
+            return "Couldn't cancel"
+    except Exception as e:
+        return(str(e)) 
+    return redirect(url_for('orderhistory', usern=usern), code=307)
+
 
 @app.route("/preferredpayment", methods=['GET', 'POST'])
 def preferredpayment():

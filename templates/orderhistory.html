@@ -19,13 +19,13 @@
         </h3>
     </form>
     
-    <form method="POST" action="/order">
+    <form method="POST" action="/orderdetail">
         <input type="hidden" name="usern" value="{{usern}}"/>
         <table>
             <tbody>
                 {% for i in orders %}
                 <tr>
-                    <td><input type="radio" name="order" value="{{i}}">{{i}}</td>
+                    <td><input type="radio" name="order" value="{{i.orderID}}">{{i}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
