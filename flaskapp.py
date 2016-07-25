@@ -380,12 +380,15 @@ def orderhistory():
             try:
                 search = request.form['Search']
                 cursor = mysql.connection.cursor()
-                cursor.execute("CALL orderDetail_GetOrderInformation ('"+search+"');")
-                r = cursor.fetchall()[0]
+                cursor.execute("CALL orderDetail_GetOrderInformation ('"+search+"', '"+usern+"');")
+                r = cursor.fetchall()
+                try:
+                    r = r[0]
+                except:
+                    orders = []
                 orders = [{'orderID':r[0],'movie':r[9],'status':r[7],'cost':r[8]}]
                 cursor.close()
             except Exception as e:
-                print(e)
                 cursor.close()
         except Exception as e:
             return(str(e)) 
@@ -396,7 +399,7 @@ def orderdetail():
     try:
         orderID = request.form['order']
         cursor = mysql.connection.cursor()
-        cursor.execute("CALL orderDetail_GetOrderInformation ('"+orderID+"');")
+        cursor.execute("CALL orderDetail_GetOrderInformation ('"+orderID+"', '"+usern+"');")
         orderRes = cursor.fetchall()[0]
         order = {'OrderID': str(orderRes[0]), 'date':str(orderRes[1]), 'time':str(orderRes[2]),
                 'status':str(orderRes[7]),'cost':str(orderRes[8]),'movie':str(orderRes[9]),

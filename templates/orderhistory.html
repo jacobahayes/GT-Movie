@@ -23,11 +23,15 @@
         <input type="hidden" name="usern" value="{{usern}}"/>
         <table>
             <tbody>
+                {% if orders|length < 1 %}
+                None of your Order IDs matched your search.
+                {% else %}
                 {% for i in orders %}
                 <tr>
                     <td><input type="radio" name="order" value="{{i.orderID}}">{{i}}</td>
                 </tr>
                 {% endfor %}
+                {% endif %}
             </tbody>
         </table>
         <input type="submit" value="View Detail"> 
